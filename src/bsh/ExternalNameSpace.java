@@ -77,7 +77,7 @@ public class ExternalNameSpace extends NameSpace
 
 	/**
 	*/
-    void setVariable( 
+    protected void setVariable( 
 		String name, Object value, boolean strictJava, boolean recurse ) 
 		throws UtilEvalError 
 	{

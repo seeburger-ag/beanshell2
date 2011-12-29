@@ -34,6 +34,7 @@
 
 package	bsh;
 
+import bsh.operators.OperatorProvider;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
@@ -94,6 +95,8 @@ public class NameSpace implements Serializable, BshClassManager.Listener, NameSo
 	private List<Object> importedObjects;
 	private List<Class> importedStatic;
 	private String packageName;
+        
+        private OperatorProvider extendedMethods = new OperatorProvider();
 
 	transient private BshClassManager classManager;
 
@@ -296,7 +299,7 @@ public class NameSpace implements Serializable, BshClassManager.Listener, NameSo
 		@param recurse determines whether we will search for the variable in
 		  our parent's scope before assigning locally.
 	*/
-    void setVariable( 
+    protected void setVariable( 
 		String name, Object value, boolean strictJava, boolean recurse ) 
 		throws UtilEvalError 
 	{
@@ -796,6 +799,7 @@ System.out.println("experiment: creating class manager");
 			importedClasses = new HashMap<String,String>();
 
 		importedClasses.put( Name.suffix(name, 1), name );
+                extendedMethods.cacheExtendedMethods(name);
 		nameSpaceChanged();
     }
 
@@ -1342,6 +1346,13 @@ System.out.println("experiment: creating class manager");
 			precedence rules...  so for max efficiency put the most common
 			ones later.
 		*/
+                importClass("bsh.operators.standard.DoubleMethods");
+                importClass("bsh.operators.standard.FloatMethods");
+                importClass("bsh.operators.standard.IntegerMethods");
+                importClass("bsh.operators.standard.MathFunctions");
+                importClass("bsh.operators.standard.ListMethods");
+                importClass("bsh.operators.standard.MapMethods");
+                importClass("bsh.operators.standard.StringMethods");
 		importClass("bsh.EvalError");
 		importClass("bsh.Interpreter");
 		importPackage("javax.swing.event");
@@ -1534,5 +1545,9 @@ System.out.println("experiment: creating class manager");
 		}
 		return new ArrayList<T>(list);
 	}
+
+    public OperatorProvider getExtendedMethodProvider() {
+        return this.extendedMethods;
+    }
 
 }

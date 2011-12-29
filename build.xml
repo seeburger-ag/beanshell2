@@ -226,7 +226,7 @@
 
 	<target name="javadoc" depends="compile">
 		<mkdir dir="${javadoc-dir}" />
-		<javadoc packagenames="bsh,bsh.util,bsh.classpath,bsh.reflect"
+		<javadoc packagenames="bsh,bsh.util,bsh.classpath,bsh.reflect,bsh.operators,bsh.operators.standard"
 			 sourcepath="${src-dir}"
 			 destdir="${javadoc-dir}"
 			 author="true"
@@ -288,6 +288,7 @@
 	<fileset id="core-fileset" dir="${build-dir}">
 		<patternset>
 			<include name="bsh/*.class"/>
+			<include name="bsh/operators/**/*.class"/>
 <!-- something funny here...  Console ends up in jarall, but not Remote -->
 			<exclude name="bsh/Console.class"/>
 			<exclude name="bsh/Remote*"/>
@@ -296,7 +297,7 @@
 			<exclude name="bsh/DelayedEvalBshMethod*"/>
 		</patternset>
 	</fileset>
-
+        
 	<fileset id="classpath-fileset" dir="${build-dir}">
 		<patternset>
 			<include name="bsh/classpath/*.class"/>
@@ -637,4 +638,25 @@
 		</antcall>
 	</target>
 
+	<!-- 
+		Run a script specified in the file property using the build 
+		classpath (e.g. latest compiled version)
+			
+			ant -Dfile=foo.bsh bsh
+	-->
+	<target name="debug test" depends="compile-tests">
+                <path id="cp">
+                        <pathelement location="${build-dir}"/>
+                        <fileset refid="lib-fileset"/>
+                </path>
+                <nbjpdastart addressproperty="jpda.address" name="BeanShell2" transport="dt_socket">
+                    <classpath refid="cp"/>
+                </nbjpdastart>
+		<java classname="bsh.Interpreter" fork="true">
+                    <classpath refid="cp"/>
+                    <jvmarg value="-Xdebug"/>
+                    <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+                    <arg value="tests/test-scripts/RunAllTests.bsh"/>
+		</java>
+	</target>
 </project>
