@@ -5,7 +5,7 @@
 	Uses Ant 1.6
 	http://www.apache.org/
 
-	Ant issues - 
+	Ant issues -
 
 		- Why can't I nest filesets?  This seems like it would be so easy and
 		useful...
@@ -20,9 +20,9 @@
 	<property name="deprecation" value="on"/>
 
 	<!-- choose an alternate compiler -->
-	<!-- 
-		<property name="build-compiler" value="jikes"/> 
-		<property name="build-compiler" value="modern"/> 
+	<!--
+		<property name="build-compiler" value="jikes"/>
+		<property name="build-compiler" value="modern"/>
 	-->
 
 	<property name="src-dir" value="src" />
@@ -34,53 +34,53 @@
 	<property name="bsf-src-dir" value="bsf/src" />
 	<property name="classgen-src-dir" value="asm/src" />
 
-	<property name="javacc-lib" 
+	<property name="javacc-lib"
 		value="${lib-dir}/javacc.jar"/>
 
-	<!-- 
+	<!--
 		Optional things you can't build under older versions of Java
 		or which require optional packages.
 		I think we can automate this in ant... deal with it later.
 	-->
 
-	<!-- Uncomment to build under JDK1.2 without warnings 
-	<property name="exclude-1.2" 
+	<!-- Uncomment to build under JDK1.2 without warnings
+	<property name="exclude-1.2"
 		value="bsh/XThis.java,bsh/util/ClassBrowser.java"/>
 	-->
 
-	<!-- Uncomment to build under JDK1.1 without warnings 
-	<property name="exclude-1.1" 
+	<!-- Uncomment to build under JDK1.1 without warnings
+	<property name="exclude-1.1"
 		value="bsh/JThis.java,bsh/classpath/*,bsh/util/*,bsh/reflect/*"/>
 	-->
 
-	<!-- Uncomment to build without making the BSF adapter 
+	<!-- Uncomment to build without making the BSF adapter
 	-->
-	<property name="exclude-bsf" 
+	<property name="exclude-bsf"
 		value="bsh/util/BeanShellBSFEngine.java,TestBshBSF.java"/>
 
 	<!-- Uncomment to build without the ASM class generator code.
-	<property name="exclude-classgen" 
+	<property name="exclude-classgen"
 		value="bsh/org/objectweb/asm/**,bsh/ClassGeneratorImpl.java,bsh/ClassGeneratorUtil.java,bsh/DelayedEvalBshMethod.java"/>
 	-->
 
-	<!-- Uncomment to build without making the servlet package 
-	<property name="exclude-servlet" 
+	<!-- Uncomment to build without making the servlet package
+	<property name="exclude-servlet"
 		value="bsh/servlet/*"/>
 	-->
 
 	<!-- Legacy excludes.  Comment this *out* to build these legacy items -->
-	<property name="excludes-legacy" 
+	<property name="excludes-legacy"
 		value="bsh/JThis.java"/>
 
 	<!-- Arbitrary excludes.  Comment this out to build these experimental or
-		other items which we've decided not to build right now. 
-	<property name="excludes-arbitrary" 
+		other items which we've decided not to build right now.
+	<property name="excludes-arbitrary"
 		value="bsh/ExternalNameSpace.java"/>
 	-->
 
 	<!--  Add up all of the excludes -->
 	<!-- how do I add strings to break this long line? -->
-	<property name="excludes" 
+	<property name="excludes"
 		value="${exclude-1.2},${exclude-1.1},${exclude-bsf},${exclude-servlet},${excludes-legacy},${exclude-classgen},${excludes-arbitrary}"/>
 
 	<!-- JARs -->
@@ -89,35 +89,35 @@
 	<property name="src-zip" value="${dist-dir}/bsh-${version}-src.zip"/>
 	<property name="all-jar-name" value="bsh-${version}.jar"/>
 	<property name="all-jar" value="${dist-dir}/${all-jar-name}"/>
-	<property name="commands-jar" 
+	<property name="commands-jar"
 		value="${dist-dir}/bsh-commands-${version}.jar"/>
-	<property name="classpath-jar" 
+	<property name="classpath-jar"
 		value="${dist-dir}/bsh-classpath-${version}.jar"/>
-	<property name="reflect-jar" 
+	<property name="reflect-jar"
 		value="${dist-dir}/bsh-reflect-${version}.jar"/>
 	<property name="util-jar" value="${dist-dir}/bsh-util-${version}.jar"/>
 	<property name="bsf-jar" value="${dist-dir}/bsh-bsf-${version}.jar"/>
 	<property name="classgen-jar" value="${dist-dir}/bsh-classgen-${version}.jar"/>
-	<property name="bshservlet-wbsh-war" 
+	<property name="bshservlet-wbsh-war"
 		value="${dist-dir}/bshservlet-wbsh.war"/>
 	<property name="bshservlet-war" value="${dist-dir}/bshservlet.war"/>
 
 	<!-- Put the auto-generated command doc in the manual dir -->
-	<property name="commands-bshdoc" 
+	<property name="commands-bshdoc"
 		value="docs/manual/bshcommands-bshdoc.xml"/>
 
 <!-- Begin Targets -->
 
 	<!-- The javacc targets could be smarter... -->
 	<target name="checkjjt">
-		<uptodate property="jjtree.notRequired" 
+		<uptodate property="jjtree.notRequired"
 				targetfile="${src-dir}/bsh/bsh.jj"
 		>
 			<srcfiles dir="${src-dir}/bsh" includes="bsh.jjt"/>
 		</uptodate>
 	</target>
 	<target name="checkjj">
-		<uptodate property="javacc.notRequired" 
+		<uptodate property="javacc.notRequired"
 				targetfile="${src-dir}/bsh/Parser.java"
 		>
 			<srcfiles dir="${src-dir}/bsh" includes="bsh.jj"/>
@@ -129,7 +129,7 @@
 		<java classname="jjtree"
 			fork="yes"
 			failonerror="yes" >
-			<arg 
+			<arg
 				line="-OUTPUT_DIRECTORY=${src-dir}/bsh ${src-dir}/bsh/bsh.jjt"/>
 			<classpath>
 				<fileset refid="lib-fileset"/>
@@ -157,7 +157,7 @@
 			destdir="${build-dir}"
 			deprecation="${deprecation}"
 			optimize="on"
-			debug="off"
+			debug="on"
 			includes="**/*.java"
 			excludes="${excludes},**/bak/**"
 		>
@@ -404,7 +404,7 @@
 			<fileset refid="${fileset}"/>
 		</jar>
 	</target>
-	
+
 	<!-- Make all of the dist jars -->
 	<target name="dist" depends="_distdir,compile,jarcore,jarall,javadoc,zipsrc,bshservlet-war,bshservlet-wbsh-war,bshdoc">
 
@@ -455,7 +455,7 @@
 	</target>
 
 	<target name="bshservlet-war" depends="compile" unless="exclude-servlet">
-		<war warfile="${bshservlet-war}" 
+		<war warfile="${bshservlet-war}"
 			webxml="${src-dir}/bsh/servlet/example-web.xml">
 			<manifest>
 				<attribute name="Specification-Title" value="BeanShell webapp" />
@@ -468,9 +468,9 @@
 			<fileset dir="${src-dir}/bsh/servlet/" includes="index.html"/>
 		</war>
 	</target>
-	<target name="bshservlet-wbsh-war" 
+	<target name="bshservlet-wbsh-war"
 					depends="compile,jarall" unless="exclude-servlet">
-		<war warfile="${bshservlet-wbsh-war}" 
+		<war warfile="${bshservlet-wbsh-war}"
 			webxml="${src-dir}/bsh/servlet/example-web.xml">
 			<manifest>
 				<attribute name="Specification-Title" value="BeanShell webapp" />
@@ -485,23 +485,23 @@
 		</war>
 	</target>
 
-	<!-- 
-		This target produces XML source for beanshell documentation of the 
+	<!--
+		This target produces XML source for beanshell documentation of the
 		bsh command set.
-		
+
 		The bshdoc script requires Java 1.4 for regular expressions.
-	
+
 		Notes:
 			- I am concerned that the fileset argument could be too large for
-			parallel if ant is using full path names.  But the bshdoc script 
+			parallel if ant is using full path names.  But the bshdoc script
 			wants all of the files simultaneously to produce one XML file
 			amenable to indexing, etc.
 			- Needs some file timestamp checking... mapper tag might help.
 
 		The output goes in the docs area, which has its own build file.
 	-->
-	<target name="bshdoc" depends="jarall">     
-		<!-- 
+	<target name="bshdoc" depends="jarall">
+		<!--
 			I'd like to use the java target, but there seems to be no way
 			to supply a fileset in an arg argument.
 		-->
@@ -513,12 +513,12 @@
 			<!--fileset refid="commands-fileset"/-->
 			<fileset dir="src/bsh/commands" includes="*.bsh"/>
 		</apply>
-	</target>   
+	</target>
 
-	<!-- 
-		Run a script specified in the file property using the build 
+	<!--
+		Run a script specified in the file property using the build
 		classpath (e.g. latest compiled version)
-			
+
 			ant -Dfile=foo.bsh bsh
 	-->
 	<target name="bsh" depends="compile">
@@ -531,7 +531,7 @@
 		</java>
 	</target>
 
-	<!-- 
+	<!--
 		Run the test suite.
 	-->
 	<target name="test">
