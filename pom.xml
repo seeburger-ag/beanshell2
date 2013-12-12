@@ -4,6 +4,7 @@
 
     <groupId>com.seeburger.as</groupId>
     <artifactId>bsh</artifactId>
+    <packaging>bundle</packaging>
     <version>2.0.4.SEE1-SNAPSHOT</version>
     <name>BeanShell</name>
 
@@ -15,6 +16,11 @@
 
     <!-- This build does not take into account changes to the script files and re-creation of Java files. But, since this
         does not change unless anything is changed in the scripts, this is totally sufficcient. See build.xml for more information. -->
+
+    <properties>
+        <osgi.imported.packages>!org.apache.bsf,!org.apache.bsf.*,*</osgi.imported.packages>
+        <osgi.exported.packages>bsh.*</osgi.exported.packages>
+    </properties>
 
     <build>
         <sourceDirectory>src</sourceDirectory>
@@ -44,6 +50,20 @@
                 </includes>
             </testResource>
         </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Export-Package>${osgi.exported.packages}</Export-Package>
+                        <Import-Package>${osgi.imported.packages}</Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>
