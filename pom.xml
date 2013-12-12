@@ -1,18 +1,18 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.seeburger.as</groupId>
     <artifactId>bsh</artifactId>
     <packaging>bundle</packaging>
-    <version>2.0.4.SEE1-SNAPSHOT</version>
+    <version>2.0.4.SEE1</version>
     <name>BeanShell</name>
 
     <scm>
         <connection>scm:git:git@github.com:seeburger-ag/beanshell2.git</connection>
         <developerConnection>scm:git:git@github.com:seeburger-ag/beanshell2.git</developerConnection>
         <url>https://github.com/seeburger-ag/beanshell2</url>
-    </scm>
+      <tag>bsh-2.0.4.SEE1</tag>
+  </scm>
 
     <!-- This build does not take into account changes to the script files and re-creation of Java files. But, since this
         does not change unless anything is changed in the scripts, this is totally sufficcient. See build.xml for more information. -->
